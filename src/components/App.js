@@ -3,7 +3,8 @@ import Order from './Order';
 import Inventory from './Inventory';
 import Header from './Header';
 import Fish from './Fish';
-import sampleFishes from '../sample-fishes'
+import sampleFishes from '../sample-fishes';
+import base from '../base';
 
 class App extends React.Component {
 	constructor() {
@@ -18,6 +19,18 @@ class App extends React.Component {
 			fishes: {},
 			order: {}
 		};
+	}
+
+	//firebase
+	componentWillMount() {
+		this.ref = base.syncState(`${this.props.params.storeId}/fishes`, {
+			context: this,
+			state: 'fishes'
+		});
+	}
+
+	componentWillUnmount() {
+		base.removeBinding(this.ref);
 	}
 
 	addFish(fish){
